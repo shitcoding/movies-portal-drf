@@ -1,0 +1,14 @@
+repos:
+-   repo: https://github.com/python-poetry/poetry
+    rev: '1.6.1'
+    hooks:
+    # pre-commit hooks for movies_admin
+    -   id: poetry-check
+        args: ["-C", "./movies_admin"]
+    -   id: poetry-lock
+        args: ["-C", "./movies_admin"]
+    -   id: poetry-export
+        args: ["-C", "./movies_admin", "--without-hashes", "-f", "requirements.txt", "-o", "./movies_admin/requirements.txt"]
+        verbose: true
+    -   id: poetry-export # Export dependencies including dev dependencies
+        args: ["-C", "./movies_admin", "--dev", "--without-hashes", "-f", "requirements.txt", "-o", "./movies_admin/requirements-dev.txt"]
