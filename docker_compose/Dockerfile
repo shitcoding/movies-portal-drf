@@ -1,4 +1,4 @@
-#### Build stage ####
+######################## Build stage ########################
 FROM python:3.11-alpine as builder
 
 # Set work directory
@@ -8,50 +8,26 @@ WORKDIR /usr/src/app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# Set up build mode (dev, staging or production)
+# Set up build mode (dev or prod)
 ARG BUILD_MODE
 ENV MODE=${BUILD_MODE}
 
 # Install psycopg2 dependencies
-RUN apk update && apk add --no-cache \
-  # postgresql-dev \
-  # gcc \
-  # python3-dev \
-  # musl-dev \
-  # curl \
-  make
+RUN apk update && apk add --no-cache make
 
-COPY . .
+COPY ./requirements.txt .
+COPY ./requirements-dev.txt .
+COPY ./Makefile .
 
-# Create wheels for project dependencies
-RUN pip install --no-cache-dir --upgrade pip
-# Install poetry and create requirements.txt
-RUN pip install --no-cache-dir poetry
-# Export dependencies to requirements.txt:
-# - with dev dependencies if MODE=dev,
-# - without dev dependencies if MODE=production
-RUN make reqs
-# Create wheels
-RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
+# Create wheels for deps from requirements.txt if MODE=prod,
+# create wheels with dev deps from requirements-dev.txt if MODE=dev
+RUN make wheels
 
 
-# # Create wheels for project dependencies
-# RUN pip install --no-cache-dir --upgrade pip && \
-#   # Install poetry and create requirements.txt
-#   pip install --no-cache-dir poetry==1.4.2 && \
-#   # Export dependencies to requirements.txt:
-#   # - with dev dependencies if MODE=dev,
-#   # - without dev dependencies if MODE=production
-#   make reqs && \
-#   # Create wheels
-#   pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
-
-
-#### Final stage ####
+######################## Final stage ########################
 FROM python:3.11-alpine
 
 # Create appropriate directories
-ENV HOME=/home/app
 ENV APP_HOME=/home/app/web
 RUN mkdir -p $APP_HOME
 WORKDIR $APP_HOME
@@ -63,6 +39,7 @@ RUN apk update && apk add --no-cache \
   gettext
 COPY --from=builder /usr/src/app/wheels /wheels
 COPY --from=builder /usr/src/app/requirements.txt .
+COPY --from=builder /usr/src/app/requirements-dev.txt .
 RUN pip install --no-cache-dir /wheels/*
 
 # Copy project files
