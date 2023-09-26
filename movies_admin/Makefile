@@ -65,6 +65,14 @@ translation: ## Prepare files for translation
 compile-translation: ## Compile translation
 	@poetry run django-admin compilemessages -i "venv" -i ".venv" -l en -l ru
 
+# Static files management
+# ------------------------------------------------------------------------------
+collectstatic:  ## Collect static files (when running app locally) 
+	@poetry run python3 manage.py collectstatic --no-input
+
+collectstatic-docker:  ## Collect static files  (when running app in Docker)
+	python3 manage.py collectstatic --no-input
+
 #-----------------------------------------------------------------------------
 # Running the app server
 
@@ -77,6 +85,12 @@ run-dev-server-docker: \
 
 	@python3 manage.py runserver 0.0.0.0:8000
 
+run-gunicorn-docker: \
+	wait-postgres \
+	migrate-docker \
+	collectstatic-docker 	## Run Gunicorn server (when running app in Docker)
+
+	@python3 -m gunicorn config.wsgi:application --bind 0.0.0.0:8000
 
 
 #-----------------------------------------------------------------------------
