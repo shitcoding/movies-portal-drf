@@ -29,7 +29,7 @@ FROM python:3.11-alpine
 
 # Create appropriate directories
 ENV APP_HOME=/home/app/web
-RUN mkdir -p $APP_HOME
+RUN mkdir -p $APP_HOME/staticfiles
 WORKDIR $APP_HOME
 
 # Install dependencies

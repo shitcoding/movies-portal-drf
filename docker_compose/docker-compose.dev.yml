@@ -14,6 +14,7 @@ services:
     restart: unless-stopped
     volumes:
       - ../movies_admin:/home/app/web:delegated # enable hot code reload in debug mode
+      - static_volume:/home/app/web/staticfiles
     ports:
       - 8000:8000
     depends_on:
@@ -34,6 +35,7 @@ services:
   nginx:
     image: nginx:1.19.2
     volumes:
+      - static_volume:/home/app/web/staticfiles
       - ../nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ../nginx/conf.d:/etc/nginx/conf.d:ro
     restart: unless-stopped
@@ -44,3 +46,4 @@ services:
 
 volumes:
   postgres_volume:
+  static_volume:
