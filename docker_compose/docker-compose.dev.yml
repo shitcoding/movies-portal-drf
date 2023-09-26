@@ -12,6 +12,8 @@ services:
       - ./.envs/.dev/.django
       - ./.envs/.dev/.db
     restart: unless-stopped
+    volumes:
+      - ../movies_admin:/home/app/web:delegated # enable hot code reload in debug mode
     ports:
       - 8000:8000
     depends_on:
