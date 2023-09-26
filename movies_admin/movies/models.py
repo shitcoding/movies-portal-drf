@@ -84,13 +84,13 @@ class Person(UUIDMixin, CreatedMixin, ModifiedMixin):
 
 
 class RoleType(models.TextChoices):
-    ACTOR = 'ACTOR', _('Actor')
-    DIRECTOR = 'DIRECTOR', _('Director')
-    WRITER = 'WRITER', _('Writer')
-    PRODUCER = 'PRODUCER', _('Producer')
-    COMPOSER = 'COMPOSER', _('Composer')
-    CINEMATOGRAPHER = 'CINEMATOGRAPHER', _('Cinematographer')
-    EDITOR = 'EDITOR', _('Editor')
+    ACTOR = 'actor', _('Actor')
+    DIRECTOR = 'director', _('Director')
+    WRITER = 'writer', _('Writer')
+    PRODUCER = 'producer', _('Producer')
+    COMPOSER = 'composer', _('Composer')
+    CINEMATOGRAPHER = 'cinematographer', _('Cinematographer')
+    EDITOR = 'editor', _('Editor')
 
 
 class PersonFilmwork(UUIDMixin, CreatedMixin):
