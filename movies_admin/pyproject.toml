@@ -12,6 +12,7 @@ django = "4.2.5"
 django-split-settings = "1.2.0"
 psycopg2-binary = "2.9.7"
 django-environ = "0.11.2"
+djangorestframework = "^3.14.0"
 
 
 [tool.poetry.group.dev.dependencies]
