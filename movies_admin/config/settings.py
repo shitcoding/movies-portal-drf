@@ -17,6 +17,14 @@ DEBUG = env.bool('DJANGO_DEBUG', default=False)
 if DEBUG:
     SECRET_KEY = env('DJANGO_SECRET_KEY', default='wow-so-secret')
     ALLOWED_HOSTS = ['*']
+    # Set up django-debug-toolbar for running in Docker
+    import socket
+
+    hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+    INTERNAL_IPS = [ip[: ip.rfind('.')] + '.1' for ip in ips] + [
+        '127.0.0.1',
+        '10.0.2.2',
+    ]
 else:
     SECRET_KEY = env('DJANGO_SECRET_KEY')
     ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS')
@@ -31,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'movies.apps.MoviesConfig',
     'django_extensions',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -41,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
