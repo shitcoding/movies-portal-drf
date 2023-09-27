@@ -2,6 +2,7 @@ version: "3.8"
 
 services:
   movies_admin:
+    container_name: movies-admin-app
     build:
       context: ../movies_admin/
       dockerfile: ../docker_compose/Dockerfile
@@ -21,6 +22,7 @@ services:
       - postgres
 
   postgres:
+    container_name: movies-admin-postgres
     image: postgres:13.0-alpine
     env_file:
       - ./.envs/.dev/.db
@@ -33,6 +35,7 @@ services:
       - 5432:5432
 
   nginx:
+    container_name: movies-admin-nginx
     build:
       context: ./nginx
       dockerfile: ./Dockerfile.nginx

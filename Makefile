@@ -48,10 +48,10 @@ prod-docker-down:	## Stop containers and remove volumes in production mode
 
 #-----------------------------------------------------------------------------
 django-superuser:	## Create django superuser
-	@docker exec -it docker_compose_movies_admin_1 make superuser-docker
+	@docker exec -it movies-admin-app make superuser-docker
 
 dummy-django-superuser:	## Autocreate test django superuser with predefined login/pass
-	@docker exec docker_compose_movies_admin_1 make dummy-superuser-docker
+	@docker exec movies-admin-app make dummy-superuser-docker
 
 
 
