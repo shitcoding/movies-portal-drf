@@ -1,13 +1,13 @@
 from rest_framework import serializers
 
-from movies.models import Filmwork, PersonFilmwork
+from movies.models import Filmwork
 
 
 class FilmworkSerializer(serializers.ModelSerializer):
-    genres = serializers.SerializerMethodField()
-    actors = serializers.SerializerMethodField()
-    directors = serializers.SerializerMethodField()
-    writers = serializers.SerializerMethodField()
+    genres = serializers.ReadOnlyField(source='annotated_genres')
+    actors = serializers.ReadOnlyField(source='annotated_actors')
+    directors = serializers.ReadOnlyField(source='annotated_directors')
+    writers = serializers.ReadOnlyField(source='annotated_writers')
 
     class Meta:
         model = Filmwork
@@ -23,30 +23,3 @@ class FilmworkSerializer(serializers.ModelSerializer):
             'directors',
             'writers',
         )
-
-    def get_genres(self, obj):
-        return [genre.name for genre in obj.genres.all()]
-
-    def get_actors(self, obj):
-        return [
-            pfw.person.full_name
-            for pfw in PersonFilmwork.objects.filter(
-                film_work=obj, role='actor'
-            )
-        ]
-
-    def get_directors(self, obj):
-        return [
-            pfw.person.full_name
-            for pfw in PersonFilmwork.objects.filter(
-                film_work=obj, role='director'
-            )
-        ]
-
-    def get_writers(self, obj):
-        return [
-            pfw.person.full_name
-            for pfw in PersonFilmwork.objects.filter(
-                film_work=obj, role='writer'
-            )
-        ]
