@@ -3,6 +3,7 @@ from django.db.models import Q
 from rest_framework import generics
 
 from movies.api.v1.serializers import FilmworkSerializer
+from movies.api.v1.pagination import Paginator
 from movies.models import Filmwork
 
 
@@ -33,6 +34,8 @@ class MoviesDetailApi(generics.RetrieveAPIView):
 
 class MoviesListApi(generics.ListAPIView):
     serializer_class = FilmworkSerializer
+    pagination_class = Paginator
+
     def get_queryset(self):
         return Filmwork.objects.all().annotate(
             annotated_genres=ArrayAgg('genres__name', distinct=True),
