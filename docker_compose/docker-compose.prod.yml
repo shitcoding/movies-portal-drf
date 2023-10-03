@@ -8,7 +8,6 @@ services:
       dockerfile: ../docker_compose/Dockerfile
       args:
         BUILD_MODE: prod
-    command: make run-gunicorn-docker
     env_file:
       - ./.envs/.prod/.django
       - ./.envs/.prod/.db

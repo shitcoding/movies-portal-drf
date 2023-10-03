@@ -8,7 +8,6 @@ services:
       dockerfile: ../docker_compose/Dockerfile
       args:
         BUILD_MODE: dev
-    command: make run-dev-server-docker
     env_file:
       - ./.envs/.dev/.django
       - ./.envs/.dev/.db
