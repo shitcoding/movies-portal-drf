@@ -81,7 +81,8 @@ run-dev-server:	## Run django dev server
 
 run-dev-server-docker: \
 	wait-postgres \
-	migrate-docker	## Run django dev server (when running app in Docker)
+	migrate-docker	\
+	collectstatic-docker ## Run django dev server (when running app in Docker)
 
 	@python3 manage.py runserver 0.0.0.0:8000
 
