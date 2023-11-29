@@ -7,7 +7,7 @@
 ## Usage
 
 ```sh
-git clone https://github.com/shitcoding/new_admin_panel_sprint_2/
+git clone https://github.com/shitcoding/movies-portal-drf
 cd new_admin_panel_sprint_2
 make help
 
